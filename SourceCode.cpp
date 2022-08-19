@@ -7,11 +7,13 @@
 using namespace std;
 
 // Function prototypes
-void CreateInventory();
-void AddItem(int id, string name, float price);
+void CreateInventory(string[] &ar);
+void AddItem(string name, float price);
 void RemoveItem(int id);
 void SeeInventory();
 void GetInput(string &input);
+
+const int RANGE = 99;
 
 // In this program an item is defined as having a 2 digit ID, a name, and a price
 int main()
@@ -20,9 +22,13 @@ int main()
 	bool userWantsToUse = true, wantsToQuit;
 	// String for user Input
 	string input;
+
+	// Array to store the inventory
+	string[99][3];
+
 	// Welcome the user to the program
 	cout << "\nWellcome to this Inventory Management System" << endl;
-
+	
 	do
 	{
 		// When first staring the program we check if there is a file to read from
@@ -105,5 +111,97 @@ int main()
 		GetInput(input);
 		(input.compare("QUIT") ? wantsToQuit = true : wantsToQuit = false;
 	} while (!wantsToQuit)
+	CreateInventory();
 	return 0;
+}
+
+void CreateInventory()
+{
+	// Generate a new file with the default entry (0, ItemName, £0.00)
+	for (int i = 0; i < RANGE; i++)
+	{
+
+	}
+	// Create output stream
+	ofstream writer("Inventory.txt");
+
+	if (!writer)
+	{
+		cout << "Error opening the file for output" << endl;
+		return;
+	}
+
+	// Save to the file
+	writer << "0\tName\t\t£0.00" << endl;
+
+	// Populate the list with the available slots for the items
+	for (int i = 1; i < 100; i++)
+	{
+		writer << i << "\t-\t\t£-" << endl;
+	}
+
+	// Close stream
+	writer.close();
+}
+
+void AddItem(string name, float price)
+{
+	// Add item with the correct properties
+	ifstream reader("Inventory.txt");
+	ofstream writer("Inventory.txt");
+
+	// Strings for id and name
+	string currentName, currentId;
+
+	if (!reader)
+	{
+		cout << "Error opening the file for input" << endl;
+		return;
+	}
+
+	// Check for first available item id
+	for (int i = 0; i < 100; ++i)
+	{
+		getline(reader, currentId, '\t');
+		getline(reader, currentName, '\t');
+
+		// If the index is empty then we break the loop
+		if (currentName.compare('-'));
+		{
+			break();
+		}
+
+		// Throw an exception if the inventory is full
+		else if (i = 99)
+		{
+			throw logic_error("Inventory is full");
+		}
+	}
+
+	// Once we've found an availabel ID we add it to the list
+	for (int i = 0, i = currentID; i++)
+	{
+		getline(reader, currentId, '\t');
+		getline(reader, currentName, '\n');
+	}
+	
+
+	// Add the item to the list with tha id
+}
+
+void RemoveItem(int id)
+{
+	// Look for the id location
+	// Empty that entry
+}
+
+void SeeInventory()
+{
+	// Print all of the inventory on the console
+}
+
+void GetInput(string& input)
+{
+	// Get the user input
+	// Convert it into all Uppercase
 }
