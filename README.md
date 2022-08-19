@@ -7,7 +7,7 @@
 - Program able to save an inventory to a text file
 - Program able to add items to the inventory, though only by hardcoding the function
 ------------------------------------------------------------------------------------
-TO DO:
+TO DO
 -RemoveItem
 -ReadFile
 -GetInput
