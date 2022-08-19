@@ -8,7 +8,7 @@
 - Program able to add items to the inventory, though only by hardcoding the function
 ------------------------------------------------------------------------------------
 TO DO:
-RemoveItem
-ReadFile
-GetInput
-IntrepertInput
+-RemoveItem
+-ReadFile
+-GetInput
+-IntrepertInput
