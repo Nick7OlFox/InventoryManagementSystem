@@ -30,8 +30,8 @@ int main()
 	string inventory [99][2];
 
 	// Welcome the user to the program
-	cout << "\nWellcome to this Inventory Management System" << endl;
-	/*
+	/*cout << "\nWellcome to this Inventory Management System" << endl;
+	
 	do
 	{
 		// When first staring the program we check if there is a file to read from
