@@ -3,15 +3,18 @@
 #include <fstream>
 #include <stdexcept>
 #include <typeinfo>
+#include <sstream>
 
 using namespace std;
 
 // Function prototypes
-void CreateInventory(string[] &ar);
-void AddItem(string name, float price);
-void RemoveItem(int id);
+void CreateInventory(string(&rInv)[99][2]);
+void GetInventory(string(&rInv)[99][2]);
+void SaveInventory(string(&rInv)[99][2]);
+void AddItem(string(&rInv)[99][2], string, float);
+void RemoveItem(int);
 void SeeInventory();
-void GetInput(string &input);
+void GetInput(string&);
 
 const int RANGE = 99;
 
@@ -24,11 +27,11 @@ int main()
 	string input;
 
 	// Array to store the inventory
-	string[99][3];
+	string inventory [99][2];
 
 	// Welcome the user to the program
 	cout << "\nWellcome to this Inventory Management System" << endl;
-	
+	/*
 	do
 	{
 		// When first staring the program we check if there is a file to read from
@@ -37,7 +40,7 @@ int main()
 			ifstream reader("inventory.txt");
 
 			// Throw exception if file doesn't exist or close stream if it does
-			(!reader) ? throw logic_error("Inventory file not found") : reader.close();
+			(!reader) ? throw logic_error("Inventory file not found") : GetInventory(inventory);
 		}
 		catch (exception& e)
 		{
@@ -110,83 +113,80 @@ int main()
 		cout << "This program is about to close. Write QUIT to accept this. - ";
 		GetInput(input);
 		(input.compare("QUIT") ? wantsToQuit = true : wantsToQuit = false;
-	} while (!wantsToQuit)
-	CreateInventory();
+	} while (!wantsToQuit)*/
+	CreateInventory(inventory);
+	AddItem(inventory, "Pencil", 0.35);
+	AddItem(inventory, "Dildo", 98.67);
 	return 0;
 }
 
-void CreateInventory()
+void CreateInventory(string(&rInv)[99][2])
 {
-	// Generate a new file with the default entry (0, ItemName, £0.00)
+	// Generate the array with the data
 	for (int i = 0; i < RANGE; i++)
 	{
-
+		rInv[i][0] = "-";
+		rInv[i][1] = "£0.00";
 	}
-	// Create output stream
+	
+	// Save onto file
+	SaveInventory(rInv);
+}
+
+void SaveInventory(string(&rInv)[99][2])
+{
 	ofstream writer("Inventory.txt");
 
 	if (!writer)
 	{
-		cout << "Error opening the file for output" << endl;
-		return;
+		throw logic_error("Error saving into file");
 	}
 
-	// Save to the file
-	writer << "0\tName\t\t£0.00" << endl;
-
-	// Populate the list with the available slots for the items
-	for (int i = 1; i < 100; i++)
+	// Save every entry into the file
+	for (int i = 0; i < RANGE; i++)
 	{
-		writer << i << "\t-\t\t£-" << endl;
+		writer << i+1 << "\t" << rInv[i][0] << "\t" << rInv[i][1] << endl;
 	}
 
-	// Close stream
+	// Close the stream
 	writer.close();
 }
 
-void AddItem(string name, float price)
+void AddItem(string(&rInv)[99][2] ,string name, float price)
 {
 	// Add item with the correct properties
-	ifstream reader("Inventory.txt");
-	ofstream writer("Inventory.txt");
+	int firstAvailableIndex;
 
-	// Strings for id and name
-	string currentName, currentId;
-
-	if (!reader)
+	for (firstAvailableIndex = 0; firstAvailableIndex < RANGE; firstAvailableIndex++)
 	{
-		cout << "Error opening the file for input" << endl;
-		return;
-	}
-
-	// Check for first available item id
-	for (int i = 0; i < 100; ++i)
-	{
-		getline(reader, currentId, '\t');
-		getline(reader, currentName, '\t');
-
-		// If the index is empty then we break the loop
-		if (currentName.compare('-'));
+		// If the slot is empty break the loop
+		if (rInv[firstAvailableIndex][0] == "-")
 		{
-			break();
+			break;
 		}
-
-		// Throw an exception if the inventory is full
-		else if (i = 99)
+		// Throw exception if there are no avaliable slots
+		else if(firstAvailableIndex == RANGE - 1)
 		{
-			throw logic_error("Inventory is full");
+			throw logic_error("There are no available slots to save this new item to");
 		}
 	}
 
-	// Once we've found an availabel ID we add it to the list
-	for (int i = 0, i = currentID; i++)
-	{
-		getline(reader, currentId, '\t');
-		getline(reader, currentName, '\n');
-	}
 	
 
-	// Add the item to the list with tha id
+	// Cast float into a string
+	stringstream stream;
+	string priceString;
+
+	stream << price;
+	stream >> priceString;
+
+	priceString = "£" + priceString;
+
+	// Add values to the array
+	rInv[firstAvailableIndex][0] = name;
+	rInv[firstAvailableIndex][1] = priceString;
+	
+	SaveInventory(rInv);
 }
 
 void RemoveItem(int id)
