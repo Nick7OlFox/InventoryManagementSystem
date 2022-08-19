@@ -116,7 +116,6 @@ int main()
 	} while (!wantsToQuit)*/
 	CreateInventory(inventory);
 	AddItem(inventory, "Pencil", 0.35);
-	AddItem(inventory, "Dildo", 98.67);
 	return 0;
 }
 
