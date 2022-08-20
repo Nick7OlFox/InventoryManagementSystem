@@ -12,7 +12,7 @@ void CreateInventory(string(&rInv)[99][2]);
 void GetInventory(string(&rInv)[99][2]);
 void SaveInventory(string(&rInv)[99][2]);
 void AddItem(string(&rInv)[99][2], string, float);
-void RemoveItem(int);
+void RemoveItem(string(&rInv)[99][2], int);
 void SeeInventory();
 void GetInput(string&);
 
@@ -116,6 +116,10 @@ int main()
 	} while (!wantsToQuit)*/
 	CreateInventory(inventory);
 	AddItem(inventory, "Pencil", 0.35);
+	AddItem(inventory, "Notebook", 1.75);
+	AddItem(inventory, "Eraser", 1.00);
+	AddItem(inventory, "Backpack", 9.99);
+	RemoveItem(inventory, 2);
 	return 0;
 }
 
@@ -125,7 +129,7 @@ void CreateInventory(string(&rInv)[99][2])
 	for (int i = 0; i < RANGE; i++)
 	{
 		rInv[i][0] = "-";
-		rInv[i][1] = "£0.00";
+		rInv[i][1] = "0.00GBP";
 	}
 	
 	// Save onto file
@@ -179,7 +183,7 @@ void AddItem(string(&rInv)[99][2] ,string name, float price)
 	stream << price;
 	stream >> priceString;
 
-	priceString = "£" + priceString;
+	priceString += "GBP";
 
 	// Add values to the array
 	rInv[firstAvailableIndex][0] = name;
@@ -188,10 +192,33 @@ void AddItem(string(&rInv)[99][2] ,string name, float price)
 	SaveInventory(rInv);
 }
 
-void RemoveItem(int id)
+void RemoveItem(string(&rInv)[99][2], int id)
 {
-	// Look for the id location
-	// Empty that entry
+	// Present the item detail and await for user confirmation to remove them
+	cout << "Name: " << rInv[--id][0] << endl;
+	cout << "Price: " << rInv[id][1] << endl;
+
+	cout << "Is this the item you're trying to remove? - ";
+
+	// TEMPORARY
+	char answer;
+	cin >> answer;
+
+	switch (answer)
+	{
+	case 'Y':
+		rInv[id][0] = "-";
+		rInv[id][1] = "0.00GBP";
+
+		SaveInventory(rInv);
+
+		break;
+	case 'N':
+		// Ask again for id
+		break;
+	default:
+		break;
+	}
 }
 
 void SeeInventory()
@@ -201,6 +228,5 @@ void SeeInventory()
 
 void GetInput(string& input)
 {
-	// Get the user input
-	// Convert it into all Uppercase
+	
 }
