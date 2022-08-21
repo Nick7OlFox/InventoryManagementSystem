@@ -9,7 +9,7 @@ using namespace std;
 
 // Function prototypes
 void CreateInventory(string(&rInv)[99][2]);
-void GetInventory(string(&rInv)[99][2]);
+void LoadInventory(string(&rInv)[99][2]);
 void SaveInventory(string(&rInv)[99][2]);
 void AddItem(string(&rInv)[99][2], string, float);
 void RemoveItem(string(&rInv)[99][2], int);
@@ -114,15 +114,60 @@ int main()
 		GetInput(input);
 		(input.compare("QUIT") ? wantsToQuit = true : wantsToQuit = false;
 	} while (!wantsToQuit)*/
-	CreateInventory(inventory);
-	AddItem(inventory, "Pencil", 0.35);
-	AddItem(inventory, "Notebook", 1.75);
-	AddItem(inventory, "Eraser", 1.00);
-	AddItem(inventory, "Backpack", 9.99);
-	RemoveItem(inventory, 2);
+	LoadInventory(inventory);
+	AddItem(inventory, "Shaver", 34.99);
 	return 0;
 }
 
+// --------------------------------------------------------------------------------------------
+//										FILE MANAGEMENT
+// --------------------------------------------------------------------------------------------
+void SaveInventory(string(&rInv)[99][2])
+{
+	ofstream writer("Inventory.txt");
+
+	if (!writer)
+	{
+		throw logic_error("Error saving into file");
+	}
+
+	// Save every entry into the file
+	for (int i = 0; i < RANGE; i++)
+	{
+		writer << i + 1 << "\t" << rInv[i][0] << "\t" << rInv[i][1] << endl;
+	}
+
+	// Close the stream
+	writer.close();
+}
+
+void LoadInventory(string(&rInv)[99][2])
+{
+	ifstream reader("Inventory.txt");
+
+	if(!reader)
+	{
+		throw logic_error("Error loading the file");
+	}
+
+	// Save every entry into an array
+	for (int i = 0; i < RANGE; i++)
+	{
+		// Ignore the first value as that's the ID and it will be saved as the array index minus 1
+		reader.ignore(3, '\t');
+
+		// Save data into array
+		getline(reader, rInv[i][0], '\t');
+		getline(reader, rInv[i][1], '\n');
+	}
+
+	// Close the stream
+	reader.close();
+}
+
+// --------------------------------------------------------------------------------------------
+//										PROGRAM FUNCTIONS
+// --------------------------------------------------------------------------------------------
 void CreateInventory(string(&rInv)[99][2])
 {
 	// Generate the array with the data
@@ -136,24 +181,7 @@ void CreateInventory(string(&rInv)[99][2])
 	SaveInventory(rInv);
 }
 
-void SaveInventory(string(&rInv)[99][2])
-{
-	ofstream writer("Inventory.txt");
 
-	if (!writer)
-	{
-		throw logic_error("Error saving into file");
-	}
-
-	// Save every entry into the file
-	for (int i = 0; i < RANGE; i++)
-	{
-		writer << i+1 << "\t" << rInv[i][0] << "\t" << rInv[i][1] << endl;
-	}
-
-	// Close the stream
-	writer.close();
-}
 
 void AddItem(string(&rInv)[99][2] ,string name, float price)
 {

@@ -1,8 +1,8 @@
 1	Pencil	0.35GBP
-2	-	0.00GBP
+2	Shaver	34.99GBP
 3	Eraser	1GBP
 4	Backpack	9.99GBP
-5	-	0.00GBP
+5	Shaver	34.99GBP
 6	-	0.00GBP
 7	-	0.00GBP
 8	-	0.00GBP

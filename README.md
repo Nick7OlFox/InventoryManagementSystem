@@ -15,7 +15,10 @@ Each item has an ID (number between 1 and 99), a name, and a prince (in GBP).
 - Program able to remove items from the inventory
 - Changed the "£" to "GBP" as the former was not beign correctly displayed in the console
 ------------------------------------------------------------------------------------------
+21/08/2022
+- Program able to read the information saved on the text file
+------------------------------------------------------------------------------------------
 TO DO:
-- ReadFile
 - GetInput
+- PrintInventory
 - IntrepertInput
