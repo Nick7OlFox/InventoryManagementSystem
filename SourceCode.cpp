@@ -8,14 +8,20 @@
 using namespace std;
 
 // Function prototypes
-void CreateInventory(string(&rInv)[99][2]);
+// File Management
 void LoadInventory(string(&rInv)[99][2]);
 void SaveInventory(string(&rInv)[99][2]);
+
+// Program Functions
+void CreateInventory(string(&rInv)[99][2]);
 void AddItem(string(&rInv)[99][2], string, float);
 void RemoveItem(string(&rInv)[99][2], int);
-void SeeInventory();
+void SeeInventory(string(&rInv)[99][2]);
+
+// Input Management
 void GetInput(string&);
 
+// Inventory size
 const int RANGE = 99;
 
 // In this program an item is defined as having a 2 digit ID, a name, and a price
@@ -114,8 +120,13 @@ int main()
 		GetInput(input);
 		(input.compare("QUIT") ? wantsToQuit = true : wantsToQuit = false;
 	} while (!wantsToQuit)*/
-	LoadInventory(inventory);
-	AddItem(inventory, "Shaver", 34.99);
+	CreateInventory(inventory);
+	AddItem(inventory, "Pencil", 0.85);
+	SeeInventory(inventory);
+	AddItem(inventory, "Pen", 1.00);
+	SeeInventory(inventory);
+	RemoveItem(inventory, 1);
+	SeeInventory(inventory);
 	return 0;
 }
 
@@ -178,10 +189,22 @@ void CreateInventory(string(&rInv)[99][2])
 	}
 	
 	// Save onto file
-	SaveInventory(rInv);
+	try
+	{
+		SaveInventory(rInv);
+	}
+	catch (exception &e)
+	{
+		cerr << "ERROR: " << e.what() << endl;
+		return;
+	}
+
+	cout << endl << "New inventory created" << endl << endl;
+
+	cout.width(40);
+	cout.fill('-');
+	cout << "-" << endl << endl;
 }
-
-
 
 void AddItem(string(&rInv)[99][2] ,string name, float price)
 {
@@ -208,7 +231,8 @@ void AddItem(string(&rInv)[99][2] ,string name, float price)
 	stringstream stream;
 	string priceString;
 
-	stream << price;
+	stream.precision(2);
+	stream << fixed << price;
 	stream >> priceString;
 
 	priceString += "GBP";
@@ -217,14 +241,28 @@ void AddItem(string(&rInv)[99][2] ,string name, float price)
 	rInv[firstAvailableIndex][0] = name;
 	rInv[firstAvailableIndex][1] = priceString;
 	
-	SaveInventory(rInv);
+	try
+	{
+		SaveInventory(rInv);
+	}
+	catch (exception &e)
+	{
+		cerr << "ERROR: " << e.what() << endl;
+		return;
+	}
+
+	cout << "Item Added" << endl << endl;
+
+	cout.width(40);
+	cout.fill('-');
+	cout << "-" << endl << endl;
 }
 
 void RemoveItem(string(&rInv)[99][2], int id)
 {
 	// Present the item detail and await for user confirmation to remove them
 	cout << "Name: " << rInv[--id][0] << endl;
-	cout << "Price: " << rInv[id][1] << endl;
+	cout << "Price: " << rInv[id][1] << endl << endl;
 
 	cout << "Is this the item you're trying to remove? - ";
 
@@ -238,20 +276,63 @@ void RemoveItem(string(&rInv)[99][2], int id)
 		rInv[id][0] = "-";
 		rInv[id][1] = "0.00GBP";
 
-		SaveInventory(rInv);
+		try
+		{
+			SaveInventory(rInv);
+		}
+		catch (exception &e)
+		{
+			cerr << "ERROR: " << e.what() << endl;
+			return;
+		}
+
+		cout << endl << "Item removed" << endl << endl;
 
 		break;
 	case 'N':
 		// Ask again for id
+		cout << endl << "Item not removed" << endl << endl;
 		break;
 	default:
+
 		break;
 	}
+
+	cout.width(40);
+	cout.fill('-');
+	cout << "-" << endl << endl;
 }
 
-void SeeInventory()
+void SeeInventory(string(&rInv)[99][2])
 {
 	// Print all of the inventory on the console
+	try
+	{
+		LoadInventory(rInv);
+	}
+	catch (exception &e)
+	{
+		cerr << "ERROR: " << e.what() << endl;
+		return;
+	}
+
+	cout << "This is your current inventory:" << endl << endl;
+
+	for (int i = 0; i < RANGE; i++)
+	{
+		// Only print slots that have an item
+		if (rInv[i][0] != "-")
+		{
+			// Print data
+			cout << "Item ID: " << i + 1 << endl;
+			cout << "Name: " << rInv[i][0] << endl;
+			cout << "Price: " << rInv[i][1] << endl << endl; // Add a blank line in between items
+		}
+	}
+	
+	cout.width(40);
+	cout.fill('-');
+	cout << "-" << endl << endl;
 }
 
 void GetInput(string& input)
