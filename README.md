@@ -20,6 +20,7 @@ Each item has an ID (number between 1 and 99), a name, and a prince (in GBP).
 - Program able to display all of items in the inventory
 - Program now displays a comfiramtion message when completing a task, except for display Inventory
 --------------------------------------------------------------------------------------------------
-TO DO:
-- GetInput
-- IntrepertInput
+23/08/2022
+- Program able to recieve and interpret input
+- Program able to display a list with all of the available commands
+- The program is functional to the initial requirements.

@@ -1,5 +1,5 @@
-1	Pencil	0.85GBP
-2	Pen	1.00GBP
+1	-	0.00GBP
+2	-	0.00GBP
 3	-	0.00GBP
 4	-	0.00GBP
 5	-	0.00GBP
